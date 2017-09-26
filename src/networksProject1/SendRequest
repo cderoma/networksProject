@@ -1,0 +1,42 @@
+public class SendRequest{
+ //Need server url and port
+  String serverurl = ;
+  int serverport = ;
+ 
+
+    SendRequest clientmessage = new SendRequest();
+
+  
+
+  public void Command(String request, String response){
+    String command = request;
+    String commandType = response;
+    Socket socket = null; 
+    System.out.println("Sending " + command + " to server");
+    try{
+      socket = new Socket(serverurl,serverport);
+      InputStreamReader inputstreamreader = new InputStreamReader(socket.getInputStream());
+      BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+      PrintWriter printwriter = new PrintWriter(socket.getOutputStream(),true);
+      printwriter.println(command);
+      String lineread = "";
+      while ((lineread = bufferedreader.readLine()) != null){
+        System.out.println(commandType + lineread);
+      }
+      System.out.println("Closing connection.");
+      bufferedreader.close();
+      inputstreamreader.close();
+      printwriter.close();
+      socket.close();
+      System.exit(0);
+ 
+    } catch (UnknownHostException e) {
+        System.err.println("Don't know about host " + serverurl);
+        System.exit(1);
+    } catch (IOException e) {
+        System.err.println("Couldn't get I/O for the connection to " +
+            serverurl);
+        System.exit(1);
+        }
+    }
+  }

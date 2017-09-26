@@ -1,0 +1,38 @@
+public class getCurrentUsers{
+ 
+  String serverurl = ;
+  int serverport = ;
+ 
+
+  
+
+  public void Command(){
+    Socket socket = null; 
+    System.out.println("Requesting current users from server");
+    try{
+      socket = new Socket(serverurl,serverport);
+      InputStreamReader inputstreamreader = new InputStreamReader(socket.getInputStream());
+      BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+      PrintWriter printwriter = new PrintWriter(socket.getOutputStream(),true);
+      printwriter.println("w");
+      String lineread = "";
+      while ((lineread = bufferedreader.readLine()) != null){
+        System.out.println("Current Users: " + lineread);
+      }
+      System.out.println("Closing connection.");
+      bufferedreader.close();
+      inputstreamreader.close();
+      printwriter.close();
+      socket.close();
+      System.exit(0);
+ 
+    } catch (UnknownHostException e) {
+        System.err.println("Don't know about host " + serverurl);
+        System.exit(1);
+    } catch (IOException e) {
+        System.err.println("Couldn't get I/O for the connection to " +
+            serverurl);
+        System.exit(1);
+        }
+    }
+  }
